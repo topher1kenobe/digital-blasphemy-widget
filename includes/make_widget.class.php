@@ -34,7 +34,8 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . $args['after_title'];
-		echo $latest_freebie->render_latest_freebie();
+		//echo $latest_freebie->render_latest_freebie();
+		echo $random_freebie->render_random_freebie();
 		echo $args['after_widget'];
 	}
 
@@ -54,9 +55,19 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
+
+		<p>
+			<label for="<?php echo $this->get_field_id( 'db_type_option' ); ?>"><?php _e( 'Choose Content Type' ); ?></label> 
+			<select name="<?php echo $this->get_field_id( 'db_type_option' ); ?>">
+				<option value="random_freebie">One Random Freebie</option>
+				<option value="latest_freebie">Latest Freebie</option>
+			</select>
+		</p>
+
+
 		<?php 
 	}
 

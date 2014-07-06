@@ -14,23 +14,10 @@ class Digital_Blasphemy_Random_Freebie {
 	 */
 	private function get_db_js() {
 
-		// create the transient name
-		$transient_name = 'digitalblasphemy_js';
-	 
-		// try getting the transient.
-		$db_js = get_transient( $transient_name );
+		// don't bother storing in transient, we're doing that with output
 
-		// if the get works properly, I should have an object in $featured_coaches.
-		// If not, run the query.
-		if ( !is_object( $db_js ) ) {
-
-			$db_js_url = "http://digitalblasphemy.com/dbfreebiesm.js";
-			$db_js = wp_remote_get( $db_js_url );
-
-			// save the results of the query with a 8 hour timeout
-			set_transient( $transient_name, $db_js, 60*60*8 );
-
-		}
+		$db_js_url = "http://digitalblasphemy.com/dbfreebiesm.js";
+		$db_js = wp_remote_get( $db_js_url );
 
 		return $db_js;
 
@@ -43,45 +30,60 @@ class Digital_Blasphemy_Random_Freebie {
 	 */
 	public function render_random_freebie() {
 
-		$db_js = $this->get_db_js();
+		// create the transient name
+		$transient_name = 'digitalblasphemy_js_output';
+	 
+		// try getting the transient.
+		$output = get_transient( $transient_name );
 
-		$db_js_body = $db_js['body'];
+		// if the get works properly, I should have an object in $featured_coaches.
+		// If not, run the query.
+		if ( !is_object( $output ) ) {
 
-		$db_js_body_array = preg_split( "/\r\n|\n|\r/", $db_js_body );
+			$db_js = $this->get_db_js();
 
-		$file_names = array();
-		$image_names = array();
+			$db_js_body = $db_js['body'];
 
-		foreach ( $db_js_body_array as $key => $string ) {
+			$db_js_body_array = preg_split( "/\r\n|\n|\r/", $db_js_body );
 
-			$get_filename = $this->get_freebie_filename( $string );
+			$file_names = array();
+			$image_names = array();
 
-			$get_imagename = $this->get_freebie_imagename( $string );
+			foreach ( $db_js_body_array as $key => $string ) {
 
-			if ( $get_filename != false ) {
-				$file_names[] = $get_filename;
+				$get_filename = $this->get_freebie_filename( $string );
+
+				$get_imagename = $this->get_freebie_imagename( $string );
+
+				if ( $get_filename != false ) {
+					$file_names[] = $get_filename;
+				}
+
+				if ( $get_imagename != false ) {
+					$image_names[] = $get_imagename;
+				}
 			}
 
-			if ( $get_imagename != false ) {
-				$image_names[] = $get_imagename;
-			}
+			$final_array = array_combine( $file_names, $image_names );
+
+			$image = array_rand( $final_array );
+
+			$output = '<div class="digitalblasphemy_freebie">' . "\n";
+
+			$output .= '<img src="http://digitalblasphemy.com/graphics/thumbs/' . $image . '_xthumb.jpg" title="' . $final_array[ $image ] . '" />' . "\n";
+
+			$output .= '<div class="db_from">';
+			$output .= __( 'Enjoy a Free Wallpaper from', 'db_freebie' );
+			$output .= ' <a href="http://digitalblasphemy.com">';
+			$output .= __( 'digitalblasphemy.com', 'db_freebie' );
+			$output .= '</a></div>' . "\n";
+
+			$output .= '</div>' . "\n";
+
+			// save the results of the query with a 8 hour timeout
+			set_transient( $transient_name, $output, 60*60*8 );
+
 		}
-
-		$final_array = array_combine( $file_names, $image_names );
-
-		$image = array_rand( $final_array );
-
-		$output = '<div class="digitalblasphemy_freebie">' . "\n";
-
-		$output .= '<img src="http://digitalblasphemy.com/graphics/thumbs/' . $image . '_xthumb.jpg" title="' . $final_array[ $image ] . '" />' . "\n";
-
-		$output .= '<div class="db_from">';
-		$output .= __( 'Enjoy a Free Wallpaper from', 'db_freebie' );
-		$output .= ' <a href="http://digitalblasphemy.com">';
-		$output .= __( 'digitalblasphemy.com', 'db_freebie' );
-		$output .= '</a></div>' . "\n";
-
-		$output .= '</div>' . "\n";
 
 		return $output;
 
