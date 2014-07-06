@@ -1,78 +1,11 @@
 <?php
 
 /**
- * Adds Digital_Blasphemy_Freebie widget.
+ * Adds Digital_Blasphemy_Random_Freebie widget.
  */
-class Digital_Blasphemy_Freebie extends WP_Widget {
+class Digital_Blasphemy_Random_Freebie {
 
-	/**
-	 * Register widget with WordPress.
-	 */
-	function __construct() {
-		parent::__construct(
-			'db_freebie_widget', // Base ID
-			__('Digital Blasphemy Freebie Thumbnail', 'db_freebie'), // Name
-			array( 'description' => __( 'Renders a random thumbnail from Digital Blasphemy\'s Freebie page.', 'db_freebie' ), )
-		);
-	}
-
-	/**
-	 * Front-end display of widget.
-	 *
-	 * @see WP_Widget::widget()
-	 *
-	 * @param array $args     Widget arguments.
-	 * @param array $instance Saved values from database.
-	 */
-	public function widget( $args, $instance ) {
-		$title = apply_filters( 'widget_title', $instance['title'] );
-
-		echo $args['before_widget'];
-		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title . $args['after_title'];
-		echo $this->render_random_freebie();
-		echo $args['after_widget'];
-	}
-
-	/**
-	 * Back-end widget form.
-	 *
-	 * @see WP_Widget::form()
-	 *
-	 * @param array $instance Previously saved values from database.
-	 */
-	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
-		}
-		else {
-			$title = '';
-		}
-		?>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<?php 
-	}
-
-	/**
-	 * Sanitize widget form values as they are saved.
-	 *
-	 * @see WP_Widget::update()
-	 *
-	 * @param array $new_instance Values just sent to be saved.
-	 * @param array $old_instance Previously saved values from database.
-	 *
-	 * @return array Updated safe values to be saved.
-	 */
-	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-
-		return $instance;
-	}
-
+	public function __construct() {}
 
 	/**
 	 * Go get the JS file from Digital Blasphemy
@@ -108,7 +41,7 @@ class Digital_Blasphemy_Freebie extends WP_Widget {
 	 *
 	 * @return string HTML of one random freebie
 	 */
-	private function render_random_freebie() {
+	public function render_random_freebie() {
 
 		$db_js = $this->get_db_js();
 
@@ -189,6 +122,6 @@ class Digital_Blasphemy_Freebie extends WP_Widget {
 	}
 
 
-} // class Digital_Blasphemy_Freebie
+} // class Digital_Blasphemy_Random_Freebie
 
 ?>

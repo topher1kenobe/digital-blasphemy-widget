@@ -7,6 +7,11 @@ Version: 1.0
 */
 
 /**
+ * include the file that gets one random freebie
+ */
+include_once( 'includes/random_freebie.class.php' );
+
+/**
  * include the file that has the widget class
  */
 include_once( 'includes/make_widget.class.php' );
