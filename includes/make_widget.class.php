@@ -29,10 +29,12 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 
 		$random_freebie = new Digital_Blasphemy_Random_Freebie;
 
+		$latest_freebie = new Digital_Blasphemy_Latest_Freebie;
+
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . $args['after_title'];
-		echo $random_freebie->render_random_freebie();
+		echo $latest_freebie->render_latest_freebie();
 		echo $args['after_widget'];
 	}
 

@@ -6,11 +6,15 @@
 class Digital_Blasphemy_Latest_Freebie {
 
 	private $latest_db_content = NULL;
+	private $latest_db_freeibe_url = NULL;
+	private $latest_db_freeibe_title = NULL;
 	private $latest_db_image_url = NULL;
+	private $db_url = 'http://digitalblasphemy.com';
 
 	public function __construct() {
 		$this->get_db_latest();
 		$this->get_latest_db_freebie_url();
+		$this->get_latest_db_freebie_title();
 		$this->get_latest_db_image_url();
 	}
 
@@ -21,24 +25,11 @@ class Digital_Blasphemy_Latest_Freebie {
 	 */
 	private function get_db_latest() {
 
-		// create the transient name
-		$transient_name = 'digitalblasphemy_latest_freebie';
-	 
-		// try getting the transient.
-		$db_latest = get_transient( $transient_name );
+		// don't bother storing in transient, we're doing that with output later
 
-		// if the get works properly, I should have an object in $featured_coaches.
-		// If not, run the query.
-		if ( !is_object( $db_latest ) ) {
-
-			$db_latest_url = "http://digitalblasphemy.com/cgi-bin/shownewfree.cgi";
-			$db_latest = wp_remote_get( $db_latest_url );
-			$db_latest_body = $db_latest['body'];
-
-			// save the results of the query with a 8 hour timeout
-			set_transient( $transient_name, wp_kses_post( $db_latest_body ), 60*60*8 );
-
-		}
+		$db_latest_url = "http://digitalblasphemy.com/cgi-bin/shownewfree.cgi";
+		$db_latest = wp_remote_get( $db_latest_url );
+		$db_latest_body = $db_latest['body'];
 
 		$this->latest_db_content = wp_kses_post( $db_latest_body );
 
@@ -51,15 +42,34 @@ class Digital_Blasphemy_Latest_Freebie {
 	 */
 	private function get_latest_db_freebie_url() {
 
-    	$doc = new DOMDocument();
-    	$doc->loadHTML($this->latest_db_content);
-    	$imageTags = $doc->getElementsByTagName('a');
+		$doc = new DOMDocument();
+		$doc->loadHTML($this->latest_db_content);
+		$imageTags = $doc->getElementsByTagName('a');
 
-    	foreach($imageTags as $tag) {
-        	$output = $tag->getAttribute('href');
-    	}
+		foreach($imageTags as $tag) {
+			$output = $tag->getAttribute('href');
+		}
 
-		$latest_db_freebie_url = $output;
+		$this->latest_db_freebie_url = esc_url( $output );
+
+	}
+
+	/**
+	 * Extract Freebie title from Latest data
+	 *
+	 * @return string title of latest freebie
+	 */
+	private function get_latest_db_freebie_title() {
+
+		$doc = new DOMDocument();
+		$doc->loadHTML($this->latest_db_content);
+		$imageTags = $doc->getElementsByTagName( 'img' );
+
+		foreach($imageTags as $tag) {
+			$output = $tag->getAttribute( 'title' );
+		}
+
+		$this->latest_db_freebie_title = wp_kses_post( $output );
 
 	}
 
@@ -71,15 +81,15 @@ class Digital_Blasphemy_Latest_Freebie {
 	private function get_latest_db_image_url() {
 
 
-    	$doc = new DOMDocument();
-    	$doc->loadHTML($this->latest_db_content);
-    	$imageTags = $doc->getElementsByTagName('img');
+		$doc = new DOMDocument();
+		$doc->loadHTML($this->latest_db_content);
+		$imageTags = $doc->getElementsByTagName('img');
 
-    	foreach($imageTags as $tag) {
-        	$output = $tag->getAttribute('src');
-    	}
+		foreach($imageTags as $tag) {
+			$output = $tag->getAttribute('src');
+		}
 
-		$this->latest_db_image_url = $output;
+		$this->latest_db_image_url = esc_url( $output );
 
 	}
 
@@ -88,68 +98,38 @@ class Digital_Blasphemy_Latest_Freebie {
 	 *
 	 * @return string HTML of one random freebie
 	 */
-	public function render_random_freebie() {
+	public function render_latest_freebie() {
 
-		$db_js = $this->latest_db_content;
+		// create the transient name
+		$transient_name = 'digitalblasphemy_latest_freebie_output';
 
-		$db_js_body = $db_js['body'];
+		// try getting the transient.
+		$output = get_transient( $transient_name );
 
-		$db_js_body_array = preg_split( "/\r\n|\n|\r/", $db_js_body );
+		// if the get works properly, I should have an object in $featured_coaches.
+		// If not, run the query.
+		if ( !is_object( $output ) ) {
 
-		$file_names = array();
-		$image_names = array();
+			$output = '<div class="digitalblasphemy digitalblasphemy_latest_freebie">' . "\n";
 
-		foreach ( $db_js_body_array as $key => $string ) {
+			$output .= '<a class="db_latest_freebie_link" href="' . $this->db_url . $this->latest_db_freebie_url . '" title="' . $this->latest_db_freebie_title . '">';
+			$output .= '<img src="' . $this->db_url . $this->latest_db_image_url . '" alt="' . $this->latest_db_freebie_title . '" />';
+			$output .= '</a>';
 
-			$get_filename = $this->get_freebie_filename( $string );
+			$output .= '<div class="db_latest_title"><a href="' . $this->db_url . $this->latest_db_freebie_url . '">' . $this->latest_db_freebie_title . '</a></div>' . "\n";
+			$output .= '<div class="db_latest_from">from <a href="' . $this->db_url . '">digitalblasphemy.com</a></div>' . "\n";
 
-			$get_imagename = $this->get_freebie_imagename( $string );
+			$output .= '</div>' . "\n";
 
-			if ( $get_filename != false ) {
-				$file_names[] = $get_filename;
-			}
+			// save the results of the query with a 8 hour timeout
+			set_transient( $transient_name, wp_kses_post( $output ), 60*60*8 );
 
-			if ( $get_imagename != false ) {
-				$image_names[] = $get_imagename;
-			}
 		}
-
-		$final_array = array_combine( $file_names, $image_names );
-
-		$image = array_rand( $final_array );
-
-		$output = '<div class="digitalblasphemy_freebie">' . "\n";
-
-		$output .= '<img src="http://digitalblasphemy.com/graphics/thumbs/' . $image . '_xthumb.jpg" title="' . $final_array[ $image ] . '" />' . "\n";
-
-		$output .= '<div class="db_from">';
-		$output .= __( 'Enjoy a Free Wallpaper from', 'db_freebie' );
-		$output .= ' <a href="http://digitalblasphemy.com">';
-		$output .= __( 'digitalblasphemy.com', 'db_freebie' );
-		$output .= '</a></div>' . "\n";
-
-		$output .= '</div>' . "\n";
 
 		return $output;
 
-	}
-
-	/**
-	 * Parse a string to get the plain english name of a random freebie
-	 *
-	 * @return string english name of a random freebie
-	 */
-	private function get_freebie_imagename( $string ) {
-
-		if ( strpos( $string, 'freebienames[' ) === 0 ) {
-			$data = explode( "'", $string );
-			return $data[1];
-		} else {
-			return false;
-		}
 
 	}
-
 
 } // class Digital_Blasphemy_Latest_Freebie
 
