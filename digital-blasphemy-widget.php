@@ -12,6 +12,12 @@ Version: 1.0
 include_once( 'includes/random_freebie.class.php' );
 
 /**
+ * include the file that gets the latest freebie
+ */
+include_once( 'includes/latest_freebie.class.php' );
+$latest =  new Digital_Blasphemy_Latest_Freebie;
+
+/**
  * include the file that has the widget class
  */
 include_once( 'includes/make_widget.class.php' );

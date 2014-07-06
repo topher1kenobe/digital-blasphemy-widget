@@ -1,38 +1,85 @@
 <?php
 
 /**
- * Makes available data for Digital Blasphemy Random Freebie
+ * Makes available data for Digital Blasphemy Latest Freebie
  */
-class Digital_Blasphemy_Random_Freebie {
+class Digital_Blasphemy_Latest_Freebie {
 
-	public function __construct() {}
+	private $latest_db_content = NULL;
+	private $latest_db_image_url = NULL;
+
+	public function __construct() {
+		$this->get_db_latest();
+		$this->get_latest_db_freebie_url();
+		$this->get_latest_db_image_url();
+	}
 
 	/**
-	 * Go get the JS file from Digital Blasphemy
+	 * Go get the latest freebie file from Digital Blasphemy
 	 *
 	 * @return string JS file from DB
 	 */
-	private function get_db_js() {
+	private function get_db_latest() {
 
 		// create the transient name
-		$transient_name = 'digitalblasphemy_js';
+		$transient_name = 'digitalblasphemy_latest_freebie';
 	 
 		// try getting the transient.
-		$db_js = get_transient( $transient_name );
+		$db_latest = get_transient( $transient_name );
 
 		// if the get works properly, I should have an object in $featured_coaches.
 		// If not, run the query.
-		if ( !is_object( $db_js ) ) {
+		if ( !is_object( $db_latest ) ) {
 
-			$db_js_url = "http://digitalblasphemy.com/dbfreebiesm.js";
-			$db_js = wp_remote_get( $db_js_url );
+			$db_latest_url = "http://digitalblasphemy.com/cgi-bin/shownewfree.cgi";
+			$db_latest = wp_remote_get( $db_latest_url );
+			$db_latest_body = $db_latest['body'];
 
 			// save the results of the query with a 8 hour timeout
-			set_transient( $transient_name, $db_js, 60*60*8 );
+			set_transient( $transient_name, wp_kses_post( $db_latest_body ), 60*60*8 );
 
 		}
 
-		return $db_js;
+		$this->latest_db_content = wp_kses_post( $db_latest_body );
+
+	}
+
+	/**
+	 * Extract Freebie URL from Latest data
+	 *
+	 * @return string URL of latest freebie
+	 */
+	private function get_latest_db_freebie_url() {
+
+    	$doc = new DOMDocument();
+    	$doc->loadHTML($this->latest_db_content);
+    	$imageTags = $doc->getElementsByTagName('a');
+
+    	foreach($imageTags as $tag) {
+        	$output = $tag->getAttribute('href');
+    	}
+
+		$latest_db_freebie_url = $output;
+
+	}
+
+	/**
+	 * Extract Image URL from Latest data
+	 *
+	 * @return string URL of latest image
+	 */
+	private function get_latest_db_image_url() {
+
+
+    	$doc = new DOMDocument();
+    	$doc->loadHTML($this->latest_db_content);
+    	$imageTags = $doc->getElementsByTagName('img');
+
+    	foreach($imageTags as $tag) {
+        	$output = $tag->getAttribute('src');
+    	}
+
+		$this->latest_db_image_url = $output;
 
 	}
 
@@ -43,7 +90,7 @@ class Digital_Blasphemy_Random_Freebie {
 	 */
 	public function render_random_freebie() {
 
-		$db_js = $this->get_db_js();
+		$db_js = $this->latest_db_content;
 
 		$db_js_body = $db_js['body'];
 
@@ -88,24 +135,6 @@ class Digital_Blasphemy_Random_Freebie {
 	}
 
 	/**
-	 * Parse a string to get the file name of a random freebie
-	 *
-	 * @return string filename of a random freebie
-	 */
-	private function get_freebie_filename( $string ) {
-
-		if ( strpos( $string, 'freebies[' ) === 0 ) {
-			$data = explode( "'", $string );
-			$output = $data[1];
-		} else {
-			$output = false;
-		}
-
-		return $output;
-
-	}
-
-	/**
 	 * Parse a string to get the plain english name of a random freebie
 	 *
 	 * @return string english name of a random freebie
@@ -122,6 +151,6 @@ class Digital_Blasphemy_Random_Freebie {
 	}
 
 
-} // class Digital_Blasphemy_Random_Freebie
+} // class Digital_Blasphemy_Latest_Freebie
 
 ?>
