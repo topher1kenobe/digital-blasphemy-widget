@@ -23,7 +23,7 @@ $latest =  new Digital_Blasphemy_Latest_Freebie;
 include_once( 'includes/make_widget.class.php' );
 
 
-// register Foo_Widget widget
+// register Digital_Blasphemy_Widget widget
 function register_digital_blasphemy_widget() {
     register_widget( 'Digital_Blasphemy_Widget' );
 }
