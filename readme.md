@@ -27,6 +27,15 @@ You can choose to show a single random thumbnail from the pool, or the latest fr
 ## Screenshots ##
 
 
+## Usage ##
+
+Some basic CSS is included.  If you'd like to turn it off, drop this code into your theme functions.php file or a plugin of your choosing.
+
+`function db_styles() {
+    return false;
+}
+add_filter( 'digitalblasphemy-styles', 'db_styles' );`
+
 ## Changelog ##
 
 ### 1.0 ###

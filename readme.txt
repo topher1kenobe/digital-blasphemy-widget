@@ -30,6 +30,15 @@ the /assets directory or the directory that contains the stable readme.txt (tags
 directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
 (or jpg, jpeg, gif).
 
+== Usage ==
+
+Some basic CSS is included.  If you'd like to turn it off, drop this code into your theme functions.php file or a plugin of your choosing.
+
+`function db_styles() {
+    return false;
+}
+add_filter( 'digitalblasphemy-styles', 'db_styles' );`
+
 == Changelog ==
 
 = 1.0 =
