@@ -25,21 +25,17 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
+
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-
 		// check for data type
-		if ( 'latest_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
+		if ( 'random_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
 			$output_object = new Digital_Blasphemy_Random_Freebie;
 			$output = $output_object->render_random_freebie();
-		} elseif ( 'random_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
+		} elseif ( 'latest_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
 			$output_object = new Digital_Blasphemy_Latest_Freebie;
 			$output = $output_object->render_latest_freebie();
 		}
-
-		$random_freebie = new Digital_Blasphemy_Random_Freebie;
-
-		$latest_freebie = new Digital_Blasphemy_Latest_Freebie;
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
