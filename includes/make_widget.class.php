@@ -10,10 +10,12 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	 */
 	function __construct() {
 		parent::__construct(
-			'digitial-blasphemy-widget', // Base ID
-			__('Digital Blasphemy', 'digitial-blasphemy-widget'), // Name
-			array( 'description' => __( 'Renders a variety of content from Digital Blasphemy.', 'digitial-blasphemy-widget' ), )
+			'digital-blasphemy-widget', // Base ID
+			__('Digital Blasphemy', 'digital-blasphemy-widget'), // Name
+			array( 'description' => __( 'Renders a variety of content from Digital Blasphemy.', 'digital-blasphemy-widget' ), )
 		);
+
+		add_action( 'wp_head', array( &$this, 'widget_css' ) );
 	}
 
 	/**
@@ -42,6 +44,31 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 		echo wp_kses_post( $output );
 		echo $args['after_widget'];
+	}
+
+	/**
+	 * Front-end css for widget.
+	 */
+	public function widget_css() {
+
+		// make sure we actually have a widget
+		if ( is_active_widget( false, false, $this->id_base, true ) ) {
+
+			// don't show the styles if the filter has them off
+			if ( ! apply_filters( 'digitalblasphemy-styles', true ) ) { return; }
+
+			$output .= '<style type="text/css">' . "\n";
+
+				$output .= '.db_title, .db_from { text-align: center; }' . "\n";
+				$output .= '.db_title { font-weight: bold; }' . "\n";
+				$output .= '.db_from { font-size: smaller; }' . "\n";
+				$output .= '.widget_digital-blasphemy-widget img { max-width: 100%; }' . "\n";
+
+			$output .= '</style>' . "\n";
+		}
+
+		print $output;
+
 	}
 
 	/**

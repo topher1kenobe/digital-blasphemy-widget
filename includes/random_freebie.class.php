@@ -72,10 +72,12 @@ class Digital_Blasphemy_Random_Freebie {
 
 			$output .= '<img src="http://digitalblasphemy.com/graphics/thumbs/' . $image . '_xthumb.jpg" title="' . $final_array[ $image ] . '" />' . "\n";
 
+			$output .= '<div class="db_title">';
+			$output .= __( 'Enjoy a Free Wallpaper', 'digital-blasphemy-widget' );
+			$output .= '</div>' . "\n";
 			$output .= '<div class="db_from">';
-			$output .= __( 'Enjoy a Free Wallpaper from', 'db_freebie' );
-			$output .= ' <a href="http://digitalblasphemy.com">';
-			$output .= __( 'digitalblasphemy.com', 'db_freebie' );
+			$output .= __( 'from', 'digital-blasphemy-widget' ) . ' <a href="http://digitalblasphemy.com">';
+			$output .= 'digitalblasphemy.com';
 			$output .= '</a></div>' . "\n";
 
 			$output .= '</div>' . "\n";

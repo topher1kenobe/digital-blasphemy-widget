@@ -116,8 +116,8 @@ class Digital_Blasphemy_Latest_Freebie {
 			$output .= '<img src="' . $this->db_url . $this->latest_db_image_url . '" alt="' . $this->latest_db_freebie_title . '" />';
 			$output .= '</a>';
 
-			$output .= '<div class="db_latest_title"><a href="' . $this->db_url . $this->latest_db_freebie_url . '">' . $this->latest_db_freebie_title . '</a></div>' . "\n";
-			$output .= '<div class="db_latest_from">from <a href="' . $this->db_url . '">digitalblasphemy.com</a></div>' . "\n";
+			$output .= '<div class="db_title"><a href="' . $this->db_url . $this->latest_db_freebie_url . '">' . $this->latest_db_freebie_title . '</a></div>' . "\n";
+			$output .= '<div class="db_from">' . __( 'from', 'digital-blasphemy-widget' ) . ' <a href="' . $this->db_url . '">digitalblasphemy.com</a></div>' . "\n";
 
 			$output .= '</div>' . "\n";
 
