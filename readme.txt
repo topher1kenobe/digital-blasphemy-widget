@@ -13,7 +13,7 @@ Allows you to render a random or latest Freebie image from Digital Blasphemy.
 
 Digital Blasphemy ( at <a href="http://digitalblasphemy.com/">http://digitalblasphemy.com/</a> ) is a great desktop wallpaper site.
 
-There are always about 10 free wallpapers available.  This widget allows you to show thumbnails of the free wallpapers.
+There are always about 10 free wallpapers available.  This WordPress widget allows you to show thumbnails of the free wallpapers.
 
 You can choose to show a single random thumbnail from the pool, or the latest freebie.
 
