@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Digital Blasphemy Widget ===
 Contributors: topher1kenobe
 Tags: widget
 Requires at least: 3.0
