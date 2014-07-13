@@ -6,8 +6,8 @@
 class Digital_Blasphemy_Latest_Freebie {
 
 	private $latest_db_content = NULL;
-	private $latest_db_freeibe_url = NULL;
-	private $latest_db_freeibe_title = NULL;
+	private $latest_db_freebie_url = NULL;
+	private $latest_db_freebie_title = NULL;
 	private $latest_db_image_url = NULL;
 	private $db_url = 'http://digitalblasphemy.com';
 
