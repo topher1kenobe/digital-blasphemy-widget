@@ -51,6 +51,8 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	 */
 	public function widget_css() {
 
+		$output = '';
+
 		// make sure we actually have a widget
 		if ( is_active_widget( false, false, $this->id_base, true ) ) {
 
