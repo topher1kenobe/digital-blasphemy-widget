@@ -131,5 +131,3 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	}
 
 } // class Digital_Blasphemy_Widget
-
-?>

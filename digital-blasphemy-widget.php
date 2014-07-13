@@ -28,5 +28,3 @@ function register_digital_blasphemy_widget() {
 	register_widget( 'Digital_Blasphemy_Widget' );
 }
 add_action( 'widgets_init', 'register_digital_blasphemy_widget' );
-
-?>

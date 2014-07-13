@@ -128,5 +128,3 @@ class Digital_Blasphemy_Random_Freebie {
 
 
 } // class Digital_Blasphemy_Random_Freebie
-
-?>

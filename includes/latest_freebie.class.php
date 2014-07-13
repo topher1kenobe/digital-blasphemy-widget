@@ -132,5 +132,3 @@ class Digital_Blasphemy_Latest_Freebie {
 	}
 
 } // class Digital_Blasphemy_Latest_Freebie
-
-?>
