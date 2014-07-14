@@ -6,6 +6,12 @@
 class Digital_Blasphemy_Widget extends WP_Widget {
 
 	/**
+	 * Make some vars
+	 */
+	private $allowed_types = NULL;
+
+
+	/**
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
@@ -16,6 +22,12 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		);
 
 		add_action( 'wp_head', array( $this, 'widget_css' ) );
+
+		$this->allowed_types = array(
+			'random_freebie' => 'One Random Freebie',
+			'latest_freebie' => 'Latest Freebie',
+		);
+
 	}
 
 	/**
@@ -32,10 +44,11 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		$output = '';
 
 		// check for data type
-		if ( 'random_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
+		//if ( 'random_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
+		if ( 'random_freebie' == $instance['db_type_option'] && array_key_exists( $instance['db_type_option'], $this->allowed_types ) ) {
 			$output_object = new Digital_Blasphemy_Random_Freebie;
 			$output = $output_object->render_random_freebie();
-		} elseif ( 'latest_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
+		} elseif ( 'latest_freebie' == $instance['db_type_option'] && array_key_exists( $instance['db_type_option'], $this->allowed_types ) ) {
 			$output_object = new Digital_Blasphemy_Latest_Freebie;
 			$output = $output_object->render_latest_freebie();
 		}
@@ -88,6 +101,7 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		else {
 			$title = '';
 		}
+
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:' ); ?></label> 
@@ -99,9 +113,8 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'db_type_option' ) ); ?>"><?php _e( 'Choose Content Type' ); ?></label> 
 			<select name="<?php echo esc_attr( $this->get_field_name( 'db_type_option' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'db_type_option' ) ); ?>" class="widefat">
 				<?php
-				$options = array( 'random_freebie' => 'One Random Freebie', 'latest_freebie' => 'Latest Freebie' );
-					foreach ( $options as $key => $option ) {
-						echo '<option value="' . $key . '" id="' . $key . '"' . selected( $instance['db_type_option'], $key ) .  '>' . $option .  '</option>';
+					foreach ( $this->allowed_types as $key => $option ) {
+						echo '<option value="' . esc_attr( $key ) . '" id="' . esc_attr( $key ) . '"' . esc_html( selected( $instance['db_type_option'], $key ) ) .  '>' . esc_html( $option ) .  '</option>';
 					}
 				?>
 			</select>
