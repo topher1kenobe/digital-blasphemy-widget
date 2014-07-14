@@ -3,7 +3,7 @@
 Plugin Name: Digital Blasphemy Widget
 Description: Creates w widget for rendering a variety of DB content
 Author: Topher
-Version: 1.0
+Version: 1.1
 */
 
 /**
