@@ -16,8 +16,8 @@ class Digital_Blasphemy_Random_Freebie {
 
 		// don't bother storing in transient, we're doing that with output
 
-		$db_js_url = "http://digitalblasphemy.com/dbfreebiesm.js";
-		$db_js = wp_remote_get( $db_js_url );
+		$db_js_url = 'http://digitalblasphemy.com/dbfreebiesm.js';
+		$db_js     = wp_remote_get( $db_js_url );
 
 		return $db_js;
 
@@ -32,13 +32,13 @@ class Digital_Blasphemy_Random_Freebie {
 
 		// create the transient name
 		$transient_name = 'digitalblasphemy_js_output';
-	 
+
 		// try getting the transient.
 		$output = get_transient( $transient_name );
 
 		// if the get works properly, I should have an object in $featured_coaches.
 		// If not, run the query.
-		if ( !is_object( $output ) ) {
+		if ( ! is_object( $output ) ) {
 
 			$db_js = $this->get_db_js();
 
@@ -46,7 +46,7 @@ class Digital_Blasphemy_Random_Freebie {
 
 			$db_js_body_array = preg_split( "/\r\n|\n|\r/", $db_js_body );
 
-			$file_names = array();
+			$file_names  = array();
 			$image_names = array();
 
 			foreach ( $db_js_body_array as $key => $string ) {
@@ -84,7 +84,7 @@ class Digital_Blasphemy_Random_Freebie {
 			$output .= '</div>' . "\n";
 
 			// save the results of the query with a 8 hour timeout
-			set_transient( $transient_name, $output, 60*60*8 );
+			set_transient( $transient_name, $output, 60 * 60 * 8 );
 
 		}
 
@@ -100,7 +100,7 @@ class Digital_Blasphemy_Random_Freebie {
 	private function get_freebie_filename( $string ) {
 
 		if ( strpos( $string, 'freebies[' ) === 0 ) {
-			$data = explode( "'", $string );
+			$data   = explode( "'", $string );
 			$output = $data[1];
 		} else {
 			$output = false;
