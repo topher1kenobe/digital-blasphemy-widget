@@ -5,11 +5,11 @@
  */
 class Digital_Blasphemy_Latest_Freebie {
 
-	private $latest_db_content = NULL;
-	private $latest_db_freebie_url = NULL;
+	private $latest_db_content       = NULL;
+	private $latest_db_freebie_url   = NULL;
 	private $latest_db_freebie_title = NULL;
-	private $latest_db_image_url = NULL;
-	private $db_url = 'http://digitalblasphemy.com';
+	private $latest_db_image_url     = NULL;
+	private $db_url                  = 'http://digitalblasphemy.com';
 
 	public function __construct() {
 		$this->get_db_latest();
@@ -27,8 +27,8 @@ class Digital_Blasphemy_Latest_Freebie {
 
 		// don't bother storing in transient, we're doing that with output later
 
-		$db_latest_url = "http://digitalblasphemy.com/cgi-bin/shownewfree.cgi";
-		$db_latest = wp_remote_get( $db_latest_url );
+		$db_latest_url  = 'http://digitalblasphemy.com/cgi-bin/shownewfree.cgi';
+		$db_latest      = wp_remote_get( $db_latest_url );
 		$db_latest_body = $db_latest['body'];
 
 		$this->latest_db_content = wp_kses_post( $db_latest_body );
@@ -43,11 +43,11 @@ class Digital_Blasphemy_Latest_Freebie {
 	private function get_latest_db_freebie_url() {
 
 		$doc = new DOMDocument();
-		$doc->loadHTML($this->latest_db_content);
-		$imageTags = $doc->getElementsByTagName('a');
+		$doc->loadHTML( $this->latest_db_content );
+		$imageTags = $doc->getElementsByTagName( 'a' );
 
-		foreach($imageTags as $tag) {
-			$output = $tag->getAttribute('href');
+		foreach ( $imageTags as $tag ) {
+			$output = $tag->getAttribute( 'href' );
 		}
 
 		$this->latest_db_freebie_url = esc_url( $output );
@@ -62,10 +62,10 @@ class Digital_Blasphemy_Latest_Freebie {
 	private function get_latest_db_freebie_title() {
 
 		$doc = new DOMDocument();
-		$doc->loadHTML($this->latest_db_content);
+		$doc->loadHTML( $this->latest_db_content );
 		$imageTags = $doc->getElementsByTagName( 'img' );
 
-		foreach($imageTags as $tag) {
+		foreach ( $imageTags as $tag ) {
 			$output = $tag->getAttribute( 'title' );
 		}
 
@@ -82,11 +82,11 @@ class Digital_Blasphemy_Latest_Freebie {
 
 
 		$doc = new DOMDocument();
-		$doc->loadHTML($this->latest_db_content);
-		$imageTags = $doc->getElementsByTagName('img');
+		$doc->loadHTML( $this->latest_db_content );
+		$imageTags = $doc->getElementsByTagName( 'img' );
 
-		foreach($imageTags as $tag) {
-			$output = $tag->getAttribute('src');
+		foreach ( $imageTags as $tag ) {
+			$output = $tag->getAttribute( 'src' );
 		}
 
 		$this->latest_db_image_url = esc_url( $output );
@@ -108,7 +108,7 @@ class Digital_Blasphemy_Latest_Freebie {
 
 		// if the get works properly, I should have an object in $featured_coaches.
 		// If not, run the query.
-		if ( !is_object( $output ) ) {
+		if ( ! is_object( $output ) ) {
 
 			$output = '<div class="digitalblasphemy digitalblasphemy_latest_freebie">' . "\n";
 
@@ -122,7 +122,7 @@ class Digital_Blasphemy_Latest_Freebie {
 			$output .= '</div>' . "\n";
 
 			// save the results of the query with a 8 hour timeout
-			set_transient( $transient_name, wp_kses_post( $output ), 60*60*8 );
+			set_transient( $transient_name, wp_kses_post( $output ), 60 * 60 * 8 );
 
 		}
 
