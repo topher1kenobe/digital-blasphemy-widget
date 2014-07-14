@@ -11,7 +11,7 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'digital-blasphemy-widget', // Base ID
-			__('Digital Blasphemy', 'digital-blasphemy-widget'), // Name
+			__( 'Digital Blasphemy', 'digital-blasphemy-widget' ), // Name
 			array( 'description' => __( 'Renders a variety of content from Digital Blasphemy.', 'digital-blasphemy-widget' ), )
 		);
 
@@ -39,11 +39,11 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 			$output = $output_object->render_latest_freebie();
 		}
 
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title . $args['after_title'];
+		echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		echo wp_kses_post( $output );
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -89,17 +89,17 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 
 		<p>
 
-			<label for="<?php echo $this->get_field_id( 'db_type_option' ); ?>"><?php _e( 'Choose Content Type' ); ?></label> 
-			<select name="<?php echo $this->get_field_name('db_type_option'); ?>" id="<?php echo $this->get_field_id('db_type_option'); ?>" class="widefat">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'db_type_option' ) ); ?>"><?php _e( 'Choose Content Type' ); ?></label> 
+			<select name="<?php echo esc_attr( $this->get_field_name( 'db_type_option' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'db_type_option' ) ); ?>" class="widefat">
 				<?php
 				$options = array( 'random_freebie' => 'One Random Freebie', 'latest_freebie' => 'Latest Freebie' );
-					foreach ($options as $key =>  $option) {
+					foreach ( $options as $key => $option ) {
 						echo '<option value="' . $key . '" id="' . $key . '"' . selected( $instance['db_type_option'], $key ) .  '>' . $option .  '</option>';
 					}
 				?>
@@ -125,7 +125,7 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 
-		$instance['db_type_option'] = wp_kses( $new_instance['db_type_option'] );
+		$instance['db_type_option'] = wp_kses_post( $new_instance['db_type_option'] );
 
 		return $instance;
 	}
