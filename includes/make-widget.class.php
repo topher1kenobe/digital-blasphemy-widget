@@ -28,7 +28,8 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title  = apply_filters( 'widget_title', $instance['title'] );
+		$output = '';
 
 		// check for data type
 		if ( 'random_freebie' == wp_kses_post( $instance['db_type_option'] ) ) {
