@@ -40,5 +40,8 @@ add_filter( 'digitalblasphemy-styles', 'db_styles' );`
 
 == Changelog ==
 
+= 1.1 =
+Code cleanup, data validation etc.  No new functionality.
+
 = 1.0 =
 * Initial release
