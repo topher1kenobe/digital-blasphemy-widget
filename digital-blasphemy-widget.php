@@ -15,7 +15,6 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/random-freebie.class.php';
  * include the file that gets the latest freebie
  */
 require_once plugin_dir_path( __FILE__ ) . 'includes/latest-freebie.class.php';
-$latest = new Digital_Blasphemy_Latest_Freebie;
 
 /**
  * include the file that has the widget class
