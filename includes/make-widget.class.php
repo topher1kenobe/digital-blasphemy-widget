@@ -15,7 +15,7 @@ class Digital_Blasphemy_Widget extends WP_Widget {
 			array( 'description' => __( 'Renders a variety of content from Digital Blasphemy.', 'digital-blasphemy-widget' ), )
 		);
 
-		add_action( 'wp_head', array( &$this, 'widget_css' ) );
+		add_action( 'wp_head', array( $this, 'widget_css' ) );
 	}
 
 	/**
