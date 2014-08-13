@@ -2,8 +2,8 @@
 Contributors: topher1kenobe
 Tags: widget
 Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 1.1
+Tested up to: 3.9.2
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ Some basic CSS is included.  If you'd like to turn it off, drop this code into y
 add_filter( 'digitalblasphemy-styles', 'db_styles' );`
 
 == Changelog ==
+
+= 1.2 =
+Code cleanup, testing, fixed bug where plugin wouldn't activate
 
 = 1.1 =
 Code cleanup, data validation etc.  No new functionality.
