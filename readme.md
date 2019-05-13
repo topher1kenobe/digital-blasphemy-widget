@@ -6,7 +6,7 @@ Allows you to render a random or latest Freebie image from Digital Blasphemy.
 **Contributors:** [topher1kenobe](http://profiles.wordpress.org/topher1kenobe)  
 **Tags:** [widget](http://wordpress.org/plugins/tags/widget)  
 **Requires at least:** 3.0  
-**Tested up to:** 4.3  
+**Tested up to:** 5.2  
 **Stable tag:** 1.3  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 
